@@ -1,0 +1,7 @@
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\bin\Debug\Arithmetic_Calc.exe.config
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\bin\Debug\Arithmetic_Calc.exe
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\bin\Debug\Arithmetic_Calc.pdb
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\obj\Debug\Arithmetic_Calc.csproj.AssemblyReference.cache
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\obj\Debug\Arithmetic_Calc.csproj.CoreCompileInputs.cache
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\obj\Debug\Arithmetic_Calc.exe
+H:\C# Proj14\Windows_Assignments\August\Console_Apps\Arithmetic_Calc\obj\Debug\Arithmetic_Calc.pdb
