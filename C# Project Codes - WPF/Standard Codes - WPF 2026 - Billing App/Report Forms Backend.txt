@@ -1,0 +1,37 @@
+
+        
+        DataTable GetReport(int customerId)
+        {
+            SqlParameter[] parameters =
+                                {
+                                    new SqlParameter("@Cust_ID", customerId)
+                                };
+
+            return ClassFiles.DB_Helper_CID.CIDExecuteProcedure("SP_Customer_Bill", parameters);
+        }
+
+        private void LoadReport()
+        {
+            try
+            {
+				int Cust_ID = SharedFile.CustomerID;
+				
+                DataTable dtbl = GetReport(Cust_ID);
+
+                ReportMaster.CrystalReport.cr_Customer_Bill cr_Cust = new CrystalReport.cr_Customer_Bill();
+
+                cr_Cust.SetDataSource(dtbl);
+
+                crv_Customer_Bill.ReportSource = null;
+                crv_Customer_Bill.ReportSource = cr_Cust;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Customer Report Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void frm_Customer_Bill_Load(object sender, EventArgs e)
+        {
+            LoadReport();
+		}

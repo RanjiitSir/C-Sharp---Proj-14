@@ -1,0 +1,70 @@
+
+
+	1 ExecuteNonQuery() => DML Commands -> Insert Update Delete Truncate
+	
+	2 ExecuteDataReader() => Multiple Values -> NRows & NColumns
+	
+	3 ExecuteScalar()   => Single Value - Treated as Object 
+	
+	
+	
+DESKTOP-JUP4QMF
+
+
+Data Source=DESKTOP-JUP4QMF;Initial Catalog=Sarathi_Academy_DB;Integrated Security=True
+
+
+
+	Cmd  = " DML / DQL "
+	
+DML : Insert Update Delete etc.
+
+	Cmd.ExecuteNonQuery();  -- To Execute/Run DML Command/s
+
+	
+DQL : Select => 
+	
+	Cmd.ExecuteScalar();	-- To Read Single Value
+	
+	Cmd.ExcuteReader();		-- Used to read more than 1 Value
+							-- Means multiple rows or columns 
+							
+
+							
+							
+							
+
+DDL
+		Create
+		Alter
+		Drop
+		
+DML
+		Insert 
+		Update
+		Delete
+		Trucate
+		
+DQL
+		Select
+		
+DCL
+		Grant
+		Revoke
+		RollBack
+	
+
+	Single Entry 
+			Single Table
+			Multi Table		
+	
+	Multiple Entries List 
+	
+			Full		
+			Entity Specific
+			
+	DateWise
+			Date From To
+			Monthly
+			Yearly	
+

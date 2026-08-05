@@ -1,0 +1,20 @@
+
+
+
+	MessageBox.Show("Employee Added Successfully","Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+	MessageBox.Show("1st Fill All The Fields!!!", "Fill Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+ 
+ 
+	private void btn_Log_Out_Click(object sender, EventArgs e)
+	{
+		DialogResult Res = MessageBox.Show("Are You Sure Want To Logout???", "LOGOUT", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+		if (Res == DialogResult.Yes)
+		{
+			frm_Login Obj = new frm_Login();
+			Obj.Show();
+			this.Hide();
+		}
+	}

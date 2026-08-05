@@ -1,0 +1,189 @@
+using System;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace CID_Billing_App.WinForms.ProductMaster.SubCategory
+{
+    public partial class frm_Add_SubCategory : Form
+    {
+        public frm_Add_SubCategory()
+        {
+            InitializeComponent();
+        }
+
+        void RefreshAll()
+        {
+            ClassFiles.ComboBoxBinder_CID.BindComboBox(cmb_Category, "Select Category_ID, Category_Name from Category_Details", "Category_Name", "Category_ID");
+
+            ClassFiles.GridBinder_CID.BindGrid(dgv_SubCategory_List, "Select * From SubCategory_Details");
+
+            tb_SubCategory_ID.Text = Convert.ToString(ClassFiles.AutoIncr_CID.Auto_Incr("SubCategory_Details", "SubCategory_ID", 51));
+            tb_SubCategory_Name.Clear();
+            cmb_Category.SelectedIndex = -1;
+        }
+        private void frm_Add_SubCategory_Load(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        public void InsertSubCategory(string Cat, string SubCat)
+        {
+            string Query = @"INSERT INTO SubCategory_Details (Category_Name, SubCategory_Name)VALUES (@CatNm, @SCatNm)";
+
+            SqlParameter[] parameters =
+                                        {
+                                                new SqlParameter("@CatNm", Cat),
+                                                new SqlParameter("@SCatNm", SubCat)
+                                        };
+
+            ClassFiles.DB_Helper_CID.CIDExecuteNonQuery(Query, parameters);
+        }
+
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tb_SubCategory_Name.Text) || cmb_Category.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please fill all required fields", "Validation",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                InsertSubCategory(cmb_Category.Text.Trim(), tb_SubCategory_Name.Text.Trim());
+
+                MessageBox.Show("Sub-Category Saved Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                RefreshAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message,"Database Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // No Logic
+            }
+        }
+    }
+}
+
+==================================================== PRODUCT =================================================================
+
+
+using System;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace CID_Billing_App.WinForms.ProductMaster.Product
+{
+    public partial class frm_Add_New_Product : Form
+    {
+        public frm_Add_New_Product()
+        {
+            InitializeComponent();
+        }
+
+        void RefreshAll()
+        {
+            ClassFiles.ComboBoxBinder_CID.BindComboBox(cmb_Category, "Select Category_ID, Category_Name from Category_Details", "Category_Name", "Category_ID");
+
+            tb_Product_ID.Text = Convert.ToString(ClassFiles.AutoIncr_CID.Auto_Incr("Product_Details", "Product_ID", 101));
+            cmb_Category.SelectedIndex = 0;
+            cmb_SubCategory.SelectedIndex = -1;
+            tb_Product_Name.Clear();
+            tb_Purchase_Rate.Clear();
+            tb_Sales_Rate.Clear();
+            tb_Product_Details.Clear();
+
+            cmb_Category.Focus();
+        }
+        public void InsertProduct(string Cat, string SubCat, string PName, double PRate, double SRate, string PDetails)
+        {
+            string Query = @"INSERT INTO Product_Details (Category_Name, SubCategory_Name, Product_Name, Purchase_Rate, Sales_Rate, Current_Stock, Product_Details)VALUES (@CatNm, @SCatNm, @PNm, @PR, @SR, @CS, @PD)";
+
+            SqlParameter[] parameters =
+                                        {
+                                                new SqlParameter("@CatNm", Cat),
+                                                new SqlParameter("@SCatNm", SubCat),
+                                                new SqlParameter("@PNm", PName),
+                                                new SqlParameter("@PR", PRate),
+                                                new SqlParameter("@SR", SRate),
+                                                new SqlParameter("@CS", 0),
+                                                new SqlParameter("@PD", PDetails),
+                                        };
+
+            ClassFiles.DB_Helper_CID.CIDExecuteNonQuery(Query, parameters);
+        }
+        private void frm_Add_New_Product_Load(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        private void cmb_Category_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string Qry = "Select SubCategory_ID, SubCategory_Name from SubCategory_Details where Category_Name = '" + cmb_Category.Text + "'";
+
+            ClassFiles.ComboBoxBinder_CID.BindComboBox(cmb_SubCategory, Qry, "SubCategory_Name", "SubCategory_ID");
+        }
+
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tb_Product_Name.Text) || cmb_Category.SelectedIndex == -1 || cmb_SubCategory.SelectedIndex == -1 || tb_Purchase_Rate.Text != "" || tb_Sales_Rate.Text != "")
+            {
+                MessageBox.Show("Please fill all required fields", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                InsertProduct(cmb_Category.Text.Trim(), cmb_SubCategory.Text.Trim(), tb_Product_Name.Text.Trim(), Convert.ToDouble(tb_Purchase_Rate.Text), Convert.ToDouble(tb_Sales_Rate.Text), tb_Product_Details.Text);
+
+                MessageBox.Show("Product Saved Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                RefreshAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // No Logic
+            }
+        }
+
+        private void btn_Refresh_Click(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        private void btn_CatPlus_Click(object sender, EventArgs e)
+        {
+            Category.frm_Add_Category AC = new Category.frm_Add_Category() { TopLevel = false, TopMost = true };
+            frm_Main_Form.pnl_Container.Controls.Clear();
+
+            frm_Main_Form.pnl_Container.Controls.Add(AC);
+            AC.Show();
+        }
+
+        private void btn_SubCat_Plus_Click(object sender, EventArgs e)
+        {
+            SubCategory.frm_Add_SubCategory ASC = new SubCategory.frm_Add_SubCategory() { TopLevel = false, TopMost = true };
+            frm_Main_Form.pnl_Container.Controls.Clear();
+
+            frm_Main_Form.pnl_Container.Controls.Add(ASC);
+            ASC.Show();
+        }
+
+        private void OnlyText(object sender, KeyPressEventArgs e)
+        {
+            ClassFiles.Input_Validator_CID.AllowAlphaNumeric(e);
+        }
+
+        private void Amount(object sender, KeyPressEventArgs e)
+        {
+            ClassFiles.Input_Validator_CID.AllowNumericAmount(e);
+        }
+    }
+}
+
